@@ -2,12 +2,13 @@
   Modules helps us avoiding naming conflict. We don't have to worry about order of the files.
 */
 
-import { cart, addToCart } from "../data/cart.js";
+import { cart, addToCart, calculateCartQuantity } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
-let productHTML = '';
+updateCartQuantity(); // we can use like this because regular function provides hoisting
 
+let productHTML = '';
 products.forEach((product) => {
   productHTML += `
         <div class="product-container">
@@ -66,16 +67,11 @@ document.querySelector('.js-products-grid')
   .innerHTML = productHTML;
 
 function updateCartQuantity() {
-  let cartQuantity = 0;
-  cart.forEach((cartItem) => {
-    cartQuantity += cartItem.quantity;
-  });
-
+  const cartQuantity = calculateCartQuantity();
   document.querySelector('.js-cart-quantity')
     .innerHTML = cartQuantity;
 }
 
-let timeoutId;
 document.querySelectorAll('.js-add-to-cart')
   .forEach((button) => {
     let timeoutId;
@@ -90,8 +86,8 @@ document.querySelectorAll('.js-add-to-cart')
 
       const showingAddedToCart = document.querySelector(`.js-added-to-cart-${productId}`);
       showingAddedToCart.classList.add('added-to-cart-opacity');
-      
-      if(timeoutId) // undefined is a falsy value
+
+      if (timeoutId) // undefined is a falsy value
         clearTimeout(timeoutId);
 
       timeoutId = setTimeout(() => {
