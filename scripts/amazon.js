@@ -1,3 +1,10 @@
+/*
+  Modules helps us avoiding naming conflict. We don't have to worry about order of the files.
+*/
+
+import { cart } from "../data/cart.js";
+import { products } from "../data/products.js";
+
 let productHTML = '';
 
 products.forEach((product) => {

@@ -55,8 +55,11 @@
       <div class="products-grid js-products-grid">
       </div>
     </div>
-    <script src="data/cart.js"></script>
-    <script src="data/products.js"></script>
-    <script src="scripts/amazon.js"></script>
+    <!-- There is a problem with script tags like in cart.js we have declared a array called cart but in other js files we cant' create
+    any other variable with the same name it's called nameing conflict. To solve this problem we use the feature module -->
+    
+    <!-- <script src="data/cart.js"></script>
+    <script src="data/products.js"></script> -->
+    <script type="module" src="scripts/amazon.js"></script>
   </body>
 </html>
