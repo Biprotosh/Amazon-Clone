@@ -1,19 +1,20 @@
-import { cart, removeFromCart, calculateCartQuantity, updateQuantity } from "../data/cart.js"; // This syntax called named export cause we are using {}
+import { cart, removeFromCart, calculateCartQuantity, updateQuantity, updateDelivery } from "../data/cart.js"; // This syntax called named export cause we are using {}
 import { products } from "../data/products.js";
-import { deliveryOptions } from "../data/deliveryOptions.js";
 import { formatCurrency } from "./utils/money.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
+import { deliveryOptions } from "../data/deliveryOptions.js";
 /* 
+    import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
     It's called default export another way of exporting. We can use it when we only want to export 1 thing.
     Each file can only have 1 defalut export
 */
 import { hello } from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
 
 // hello(); // Example of using a extarnal library.
-const today = dayjs();
-const delivaryDate = today.add(7, 'days');
-console.log(delivaryDate);
-console.log(delivaryDate.format('dddd, MMMM D'));
+// const today = dayjs();
+// const delivaryDate = today.add(7, 'days');
+// console.log(delivaryDate);
+// console.log(delivaryDate.format('dddd, MMMM D'));
 
 function updateCartQuantity() {
     const cartQuantity = calculateCartQuantity();
@@ -34,15 +35,16 @@ cart.forEach((cartItems) => {
     });
 
     const deliveryOptionId = cartItems.deliveryOptionId;
-
+    
     let deliveryOption;
     deliveryOptions.forEach((option) => {
-        if(option.id === deliveryOptionId)
+        if (option.id === deliveryOptionId)
             deliveryOption = option;
     });
+    // console.log(deliveryOption);
 
     const today = dayjs();
-    const deliveryDate = today.add(deliveryOption.deliveryDay, 'days');
+    const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
     const dateString = deliveryDate.format('dddd, MMMM D');
 
     cartSummaryHTML += `
@@ -88,11 +90,11 @@ cart.forEach((cartItems) => {
     `;
 });
 
-function deliveryOptionsHTML(matchingProduct, cartItem){
+function deliveryOptionsHTML(matchingProduct, cartItem) {
     let html = '';
     deliveryOptions.forEach((deliveryOption) => {
         const today = dayjs();
-        const deliveryDate = today.add(deliveryOption.deliveryDay, 'days');
+        const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
         const dateString = deliveryDate.format('dddd, MMMM D');
         // console.log(dateString);
 
@@ -101,7 +103,9 @@ function deliveryOptionsHTML(matchingProduct, cartItem){
         const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
 
         html += `
-        <div class="delivery-option">
+        <div class="delivery-option js-delivery-option" 
+        data-product-id="${matchingProduct.id}" 
+        data-delivery-option-id="${deliveryOption.id}">
             <input type="radio"
             ${isChecked ? 'checked' : ''}
             class="delivery-option-input"
@@ -164,5 +168,13 @@ document.querySelectorAll('.js-save-link')
                     .innerHTML = newQuantity;
                 updateCartQuantity();
             }
+        });
+    });
+
+document.querySelectorAll('.js-delivery-option')
+    .forEach((element) => {
+        element.addEventListener('click', () => {
+            const { productId, deliveryOptionId } = element.dataset;
+            updateDelivery(productId, deliveryOptionId);
         });
     });
