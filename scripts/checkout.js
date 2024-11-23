@@ -133,7 +133,7 @@ document.querySelectorAll('.js-save-link')
             container.classList.remove('is-editing-quantity');
 
             const newQuantity = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
-            if(newQuantity <= 0 || newQuantity > 1000){
+            if(newQuantity < 0 || newQuantity > 1000){
                 alert('Quantity must be atleast 0 and less than 1000');
             }
 
