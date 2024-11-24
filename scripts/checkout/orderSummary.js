@@ -4,6 +4,7 @@ import { formatCurrency } from "../utils/money.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
 import { renderPaymentSummary } from "./paymentSummery.js";
+import { renderCheckoutHeader } from "./checkoutHeader.js"; 
 
 /* 
     import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
@@ -12,13 +13,15 @@ import { renderPaymentSummary } from "./paymentSummery.js";
 */
 import { hello } from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
 
-function updateCartQuantity() {
-    const cartQuantity = calculateCartQuantity();
-    document.querySelector('.js-checkout-header-middle-section')
-        .innerHTML = `${cartQuantity} items`;
-    // console.log(`Check out ${cartQuantity}`);
-}
-updateCartQuantity();
+// function updateCartQuantity() {
+//     const cartQuantity = calculateCartQuantity();
+//     document.querySelector('.js-checkout-header-middle-section')
+//         .innerHTML = `${cartQuantity} items`;
+//     // console.log(`Check out ${cartQuantity}`);
+// }
+// updateCartQuantity();
+
+renderCheckoutHeader();
 
 export function renderOrderSummary() {
     let cartSummaryHTML = '';
@@ -121,9 +124,10 @@ export function renderOrderSummary() {
                 const productId = link.dataset.productId;
                 removeFromCart(productId);
 
-                const container = document.querySelector(`.js-cart-item-container-${productId}`);
-                container.remove();
-                updateCartQuantity();
+                // const container = document.querySelector(`.js-cart-item-container-${productId}`);
+                // container.remove();
+                renderOrderSummary(); // Instead of using dom we are regenerating the html using renderOrderSummary()
+                renderCheckoutHeader();
 
                 renderPaymentSummary();
             });
@@ -148,17 +152,18 @@ export function renderOrderSummary() {
                 const newQuantity = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
                 if (newQuantity < 0 || newQuantity > 1000) {
                     alert('Quantity must be atleast 0 and less than 1000');
+                    return;
                 } else if (newQuantity === 0) {
                     removeFromCart(productId);
-                    document.querySelector(`.js-cart-item-container-${productId}`).remove();
-                    updateCartQuantity();
+                    // document.querySelector(`.js-cart-item-container-${productId}`).remove();
+                    renderOrderSummary(); // Instead of using dom we are regenerating the html using renderOrderSummary()
                 } else {
                     updateQuantity(productId, newQuantity);
                     document.querySelector(`.js-quantity-label-${productId}`)
                         .innerHTML = newQuantity;
-                    updateCartQuantity();
-                    renderPaymentSummary();
                 }
+                renderCheckoutHeader();
+                renderPaymentSummary();
             });
         });
 
