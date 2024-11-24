@@ -57,4 +57,5 @@ export function renderPaymentSummary(){
         .innerHTML = paymentSummaryHTML;
 
     });
+    
 }
