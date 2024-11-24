@@ -1,8 +1,8 @@
 import { cart, removeFromCart, calculateCartQuantity, updateQuantity, updateDelivery } from "../../data/cart.js"; // This syntax called named export cause we are using {}
-import { products } from "../../data/products.js";
+import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import { deliveryOptions } from "../../data/deliveryOptions.js";
+import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
 /* 
     import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
     It's called default export another way of exporting. We can use it when we only want to export 1 thing.
@@ -29,19 +29,10 @@ export function renderOrderSummary() {
     cart.forEach((cartItems) => {
         const productId = cartItems.productId;
 
-        let matchingProduct;
-        products.forEach((productItem) => {
-            if (productItem.id === productId)
-                matchingProduct = productItem;
-        });
+        const matchingProduct = getProduct(productId);
 
         const deliveryOptionId = cartItems.deliveryOptionId;
-
-        let deliveryOption;
-        deliveryOptions.forEach((option) => {
-            if (option.id === deliveryOptionId)
-                deliveryOption = option;
-        });
+        const deliveryOption = getDeliveryOption(deliveryOptionId);
         // console.log(deliveryOption);
 
         const today = dayjs();
