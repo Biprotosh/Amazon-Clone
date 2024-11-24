@@ -92,3 +92,16 @@ export function updateDelivery(productId, deliveryOptionId){
     // console.log(matchingCartItem.deliveryOptionId, typeof matchingCartItem.deliveryOptionId);
     saveToStorage();
 }
+
+// Getting the product using backend
+
+export function loadCarts(){
+  const xhr = new XMLHttpRequest();
+
+  xhr.addEventListener('load', () => {
+    console.log(xhr.response);
+  });
+  
+  xhr.open('GET', 'https://supersimplebackend.dev/cart');
+  xhr.send();
+}
