@@ -3,14 +3,17 @@
 */
 
 import { cart, addToCart, calculateCartQuantity } from "../data/cart.js";
-import { products } from "../data/products.js";
+import { products, loadProducts } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
-updateCartQuantity(); // we can use like this because regular function provides hoisting
+loadProducts(renderProductsGrid);
 
-let productHTML = '';
-products.forEach((product) => {
-  productHTML += `
+function renderProductsGrid() {
+  updateCartQuantity(); // we can use like this because regular function provides hoisting
+
+  let productHTML = '';
+  products.forEach((product) => {
+    productHTML += `
         <div class="product-container">
           <div class="product-image-container">
             <img class="product-image"
@@ -60,39 +63,40 @@ products.forEach((product) => {
           </button>
         </div>
     `
-  // data attribute is just an html attribute, it have to start with "data-" then give it any name. data-my-name
-});
-
-document.querySelector('.js-products-grid')
-  .innerHTML = productHTML;
-
-function updateCartQuantity() {
-  const cartQuantity = calculateCartQuantity();
-  document.querySelector('.js-cart-quantity')
-    .innerHTML = cartQuantity;
-}
-
-document.querySelectorAll('.js-add-to-cart')
-  .forEach((button) => {
-    let timeoutId;
-    button.addEventListener('click', () => {
-      // console.log(button.dataset);
-      // console.log(button.dataset.product);
-
-      const productId = button.dataset.productId;
-      addToCart(productId);
-      updateCartQuantity();
-
-
-      const showingAddedToCart = document.querySelector(`.js-added-to-cart-${productId}`);
-      showingAddedToCart.classList.add('added-to-cart-opacity');
-
-      if (timeoutId) // undefined is a falsy value
-        clearTimeout(timeoutId);
-
-      timeoutId = setTimeout(() => {
-        showingAddedToCart.classList.remove('added-to-cart-opacity');
-      }, 2000);
-
-    });
+    // data attribute is just an html attribute, it have to start with "data-" then give it any name. data-my-name
   });
+
+  document.querySelector('.js-products-grid')
+    .innerHTML = productHTML;
+
+  function updateCartQuantity() {
+    const cartQuantity = calculateCartQuantity();
+    document.querySelector('.js-cart-quantity')
+      .innerHTML = cartQuantity;
+  }
+
+  document.querySelectorAll('.js-add-to-cart')
+    .forEach((button) => {
+      let timeoutId;
+      button.addEventListener('click', () => {
+        // console.log(button.dataset);
+        // console.log(button.dataset.product);
+
+        const productId = button.dataset.productId;
+        addToCart(productId);
+        updateCartQuantity();
+
+
+        const showingAddedToCart = document.querySelector(`.js-added-to-cart-${productId}`);
+        showingAddedToCart.classList.add('added-to-cart-opacity');
+
+        if (timeoutId) // undefined is a falsy value
+          clearTimeout(timeoutId);
+
+        timeoutId = setTimeout(() => {
+          showingAddedToCart.classList.remove('added-to-cart-opacity');
+        }, 2000);
+
+      });
+    });
+}
