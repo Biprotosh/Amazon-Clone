@@ -671,8 +671,28 @@ export const products = [
 ];
 */
 
-// Getting the product using backend
+/*
+  Getting the product using backend
+  XMLHttpRequest() uses callback. Instead of we can use fetch() and it uses promises to fetch data.
+  fetch() also lets us make request to a backend. fetch() is gonna send a request to the backend and when we get the response it goes to the
+  next step which we can write inside then function
+*/
+
 export let products = [];
+
+export function loadProductsFetch(){
+  const promise = fetch('https://supersimplebackend.dev/products').then((response) => {
+    return response.json();
+  }).then((productsData) => {
+    console.log(productsData);
+  });
+
+  return promise;
+}
+
+loadProductsFetch().then(() => {
+  console.log('Next Step');
+});
 
 export function loadProducts(fun){
   const xhr = new XMLHttpRequest();
