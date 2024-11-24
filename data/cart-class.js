@@ -1,14 +1,14 @@
 class Cart { // Class is a object generater
-    cartItems = undefined;
-    localStorageKey = undefined;
+    cartItems = undefined; // without # is called public property
+    #localStorageKey; // # makes the variable private property
 
     constructor(localStorageKey){
         this.localStorageKey = localStorageKey;
-        this.loadFromStorage();
+        this.#loadFromStorage();
     }
 
-    loadFromStorage() {
-        this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey));
+    #loadFromStorage() {
+        this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));
 
         if (!this.cartItems) {
             this.cartItems = [{
@@ -24,11 +24,11 @@ class Cart { // Class is a object generater
                 quantity: 1,
                 deliveryOptionId: '3'
             }];
-        }nnnnnnn
+        }
     }
 
     saveToStorage() {
-        localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItems));
+        localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems));
     }
 
     addToCart(productId) {
@@ -108,6 +108,7 @@ class Cart { // Class is a object generater
 const cart = new Cart('cart-oop');
 const businessCart = new Cart('cart-business');
 
+// cart.#localStorageKey = 'test';
 console.log(cart);
 console.log(businessCart);
 
