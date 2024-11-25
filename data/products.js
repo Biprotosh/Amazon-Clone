@@ -675,13 +675,14 @@ export const products = [
   Getting the product using backend
   XMLHttpRequest() uses callback. Instead of we can use fetch() and it uses promises to fetch data.
   fetch() also lets us make request to a backend. fetch() is gonna send a request to the backend and when we get the response it goes to the
-  next step which we can write inside then function
+  next step which we can write inside then function. We can only use await, when we're insede an async function
 */
 
 export let products = [];
 
 export function loadProductsFetch(){
   const promise = fetch('https://supersimplebackend.dev/products').then((response) => {
+    console.log('Loading Products');
     return response.json();
   }).then((productsData) => {
     console.log(productsData);
@@ -690,9 +691,10 @@ export function loadProductsFetch(){
   return promise;
 }
 
-loadProductsFetch().then(() => {
-  console.log('Next Step');
-});
+// We can add next step here using then
+// loadProductsFetch().then(() => {
+//   console.log('Next Step');
+// });
 
 export function loadProducts(fun){
   const xhr = new XMLHttpRequest();
