@@ -686,7 +686,7 @@ export function loadProductsFetch(){
     return response.json();
   }).then((productsData) => {
     console.log(productsData);
-  });
+  }).catch(); // catch can be used to get information about errors
 
   return promise;
 }

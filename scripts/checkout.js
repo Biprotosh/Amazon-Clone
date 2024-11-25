@@ -15,17 +15,20 @@ import { loadCarts } from "../data/cart.js";
     before going to the next line.
 */
 
-async function loadPage(){
-    console.log('Load Page');
-
-    await loadProductsFetch(); // await lets us write asynchronous code like normal code
-
-    await new Promise((resolve) => { // loading cart
-        loadCarts(() => {
-            resolve();
+async function loadPage() {
+    try {
+        console.log('Load Page');
+        await loadProductsFetch(); // await lets us write asynchronous code like normal code
+        await new Promise((resolve) => { // loading cart
+            loadCarts(() => {
+                resolve();
+            });
         });
-    });
 
+    } catch (error){
+        console.log('Please try again!');
+    }
+    
     renderPaymentSummary();
     renderOrderSummary();
 
